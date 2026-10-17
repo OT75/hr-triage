@@ -1,4 +1,14 @@
-import pytest
+import pytest 
+
+# python -m pytest
+# It finds all subfolders of the directory its been called from
+# And it finds all files with "test_" in name and checks all functions starting with "test_" in file. And test files must be in a folder named "tests"
+
+# python -m pytest -v                          # show each test name
+# python -m pytest tests\test_schemas.py       # run one file
+# python -m pytest -k email                    # only tests with "email" in the name
+# python -m pytest -x                          # stop at the first failure
+
 from pydantic import ValidationError
 
 from app.schemas import Category, Extraction, RequestIn
