@@ -56,3 +56,12 @@ class TicketOut(BaseModel):
     id: int
     extraction: Extraction | None
     routing: RoutingDecision
+    draft: str
+
+class DraftResult(BaseModel):
+    """What the LLM returns when drafting a reply."""
+
+    reply: str = Field(description="The reply email to the employee")
+    fully_answered: bool = Field(
+        description="True only if the policy answers every question in the request"
+    )

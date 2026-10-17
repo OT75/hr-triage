@@ -2,7 +2,7 @@ from app.schemas import Category, Extraction, RoutingDecision, Urgency
 
 CONFIDENCE_THRESHOLD = 0.7   # measured in 3.1; kept or removed based on the results
 
-QUEUES = {
+QUEUES = { # assinging different teams to different categories
     Category.payroll: "payroll",
     Category.leave: "time-off",
     Category.documents: "documents",
@@ -12,7 +12,7 @@ QUEUES = {
 }
 
 
-def route(extraction: Extraction | None) -> RoutingDecision:
+def route(extraction: Extraction | None, draft_complete: bool = True) -> RoutingDecision:
     """Decide the queue and whether a human must review. Plain rules, no LLM."""
     if extraction is None:
         return RoutingDecision(
@@ -30,8 +30,11 @@ def route(extraction: Extraction | None) -> RoutingDecision:
     extra_topics = [t for t in extraction.other_topics if t != extraction.category]
     if extra_topics:
         names = ", ".join(t.value for t in extra_topics)
-        reasons.append(f"also asks about: {names}")
 
+        reasons.append(f"also asks about: {names}")
+    if not draft_complete:                                  # new
+        reasons.append("draft could not answer everything")
+        
     return RoutingDecision(
         queue=QUEUES[extraction.category],
         needs_review=bool(reasons),   # any reason at all → review
