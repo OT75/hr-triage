@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
     llm_model: str = "gpt-5.4-mini"
     llm_base_url: str | None = None       # None = OpenAI; set it to use another provider
+    database_url: str
 
 
 
