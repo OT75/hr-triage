@@ -1,6 +1,8 @@
 from enum import Enum
 
-from pydantic import BaseModel, EmailStr, Field
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class Category(str, Enum):
@@ -65,3 +67,41 @@ class DraftResult(BaseModel):
     fully_answered: bool = Field(
         description="True only if the policy answers every question in the request"
     )
+
+class TicketCreated(BaseModel):
+    """What the employee gets back: a receipt, nothing internal."""
+
+    id: int
+    message: str
+
+
+class TicketHR(BaseModel):
+    """Everything HR needs to review a ticket."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    created_at: datetime
+    name: str
+    email: str
+    text: str
+    category: str | None
+    urgency: str | None
+    language: str | None
+    summary: str | None
+    confidence: float | None
+    other_topics: list[str]
+    queue: str
+    needs_review: bool
+    review_reasons: list[str]
+    draft: str
+    final_reply: str | None
+    status: str
+    edited: bool
+
+
+class TicketUpdate(BaseModel):
+    """What HR sends to edit and/or approve a ticket."""
+
+    reply: str | None = None
+    approve: bool = False

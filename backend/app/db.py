@@ -13,8 +13,8 @@ class Base(DeclarativeBase):
 
 def get_db(): 
     """Give one request (API CALL) its own session, and always close it afterwards."""
-    db = SessionLocal()
-    try:
-        yield db
+    db = SessionLocal() # ┐ half 1: runs BEFORE your endpoint
+    try:                # │
+        yield db        # ┘ pause: hand `db` to the endpoint, wait here
     finally:
-        db.close()
+        db.close()      # ← half 2: runs AFTER your endpoint is finished

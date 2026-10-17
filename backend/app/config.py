@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     llm_model: str = "gpt-5.4-mini"
     llm_base_url: str | None = None       # None = OpenAI; set it to use another provider
     database_url: str
+    hr_username: str = "hr"
+    hr_password: str                      # required: no password, no start
 
 
 
