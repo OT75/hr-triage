@@ -4,6 +4,7 @@ from openai import AuthenticationError, OpenAIError
 from app.config import settings
 from app.llm import extract
 from app.schemas import RequestIn, TicketOut
+from app.routing import route
 
 app = FastAPI(title=settings.app_name)
 
@@ -26,6 +27,10 @@ def create_request(request: RequestIn):
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="The AI service is unavailable. Please try again in a minute.")
 
     ticket_id = len(tickets) + 1
-    ticket = TicketOut(id=ticket_id, extraction=extraction, needs_review=extraction is None)
+    ticket = TicketOut(
+        id=ticket_id,
+        extraction=extraction,
+        routing=route(extraction),
+    )
     tickets[ticket_id] = {"request": request, "ticket": ticket}
     return ticket

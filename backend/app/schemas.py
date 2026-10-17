@@ -43,10 +43,16 @@ class Extraction(BaseModel):
         description="Other categories this request ALSO asks about. Empty list if only one topic."
     )
 
+class RoutingDecision(BaseModel):
+    """Where a ticket goes and why. Decided by code, not by the LLM."""
+
+    queue: str
+    needs_review: bool
+    reasons: list[str]
 
 class TicketOut(BaseModel):
     """What the API returns after a request is submitted."""
 
     id: int
     extraction: Extraction | None
-    needs_review: bool
+    routing: RoutingDecision
