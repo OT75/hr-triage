@@ -39,6 +39,9 @@ class Extraction(BaseModel):
     confidence: float = Field(
         ge=0, le=1, description="How sure the model is about the category, 0 to 1"
     )
+    other_topics: list[Category] = Field(
+        description="Other categories this request ALSO asks about. Empty list if only one topic."
+    )
 
 
 class TicketOut(BaseModel):

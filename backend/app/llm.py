@@ -1,3 +1,5 @@
+from datetime import date
+
 from openai import OpenAI
 from pydantic import ValidationError
 
@@ -41,7 +43,7 @@ MAX_ATTEMPTS = 2
 def extract(text: str) -> Extraction | None:
     """Turn a request into a validated Extraction, or None after 2 bad answers."""
     messages = [
-        {"role": "system", "content": EXTRACTION_PROMPT},
+        {"role": "system", "content": f"{EXTRACTION_PROMPT}\n\nToday's date: {date.today().isoformat()}"},
         {"role": "user", "content": text},
     ]
     for attempt in range(1, MAX_ATTEMPTS + 1):

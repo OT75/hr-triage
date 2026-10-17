@@ -21,6 +21,7 @@ def valid_extraction():
         "language": "en",
         "summary": "Wants 3 days off in May",
         "confidence": 0.9,
+        "other_topics": [],
     }
 
 
