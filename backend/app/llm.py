@@ -23,8 +23,11 @@ Categories:
 - leave: vacation, sick leave, parental leave, time off
 - documents: employment certificates, contract copies, reference letters
 - benefits: health insurance, pension, company perks, transport
-- onboarding: first days at work, equipment, access badges, training for new hires
-- other: anything else, including requests that are not about HR
+- onboarding: only for NEW employees in their first weeks: first-day setup,
+  access badges, initial equipment, training
+- other: anything else, including IT problems of existing employees,
+  complaints or conflicts with managers or colleagues, and requests
+  that are not about HR
 
 Urgency:
 - high: a deadline within 3 days, or the employee is losing pay or access
@@ -52,15 +55,15 @@ def extract(text: str) -> Extraction | None:
             response = client.responses.parse(
                 model=settings.llm_model,
                 input=messages,
-                text_format=Extraction,
+                text_format=Extraction, # Shape of the output we need
             )
             if response.output_parsed is not None:
                 return response.output_parsed
-            problem = "You returned no answer."
-        except ValidationError as error:
-            problem = f"Your last answer was invalid: {error}."
+            problem = "You returned no answer."                 # The feedback is given (to the llm) after the first failure, before the second try
+        except ValidationError as error:                        # Never after the second, because there’s no third try.
+            problem = f"Your last answer was invalid: {error}." # Only give feedback if there's another try
 
-        if attempt < MAX_ATTEMPTS:      # only give feedback if there's another try
+        if attempt < MAX_ATTEMPTS:                          
             messages.append({"role": "user", "content": f"{problem} Fix it."})
 
     return None

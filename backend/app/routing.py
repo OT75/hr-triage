@@ -1,6 +1,6 @@
 from app.schemas import Category, Extraction, RoutingDecision, Urgency
 
-CONFIDENCE_THRESHOLD = 0.7   # measured in 3.1; kept or removed based on the results
+# CONFIDENCE_THRESHOLD = 0.7   #  Old value that was measured in 3.1; ->  removed based on the results
 
 QUEUES = { # assinging different teams to different categories
     Category.payroll: "payroll",
@@ -24,8 +24,6 @@ def route(extraction: Extraction | None, draft_complete: bool = True) -> Routing
         reasons.append("no clear HR category")
     if extraction.urgency == Urgency.high:
         reasons.append("high urgency")
-    if extraction.confidence < CONFIDENCE_THRESHOLD:
-        reasons.append(f"low confidence ({extraction.confidence:.2f})")
 
     extra_topics = [t for t in extraction.other_topics if t != extraction.category]
     if extra_topics:
