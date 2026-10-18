@@ -2,6 +2,8 @@ from fastapi import Depends, FastAPI, HTTPException, Request, status
 from openai import AuthenticationError, OpenAIError
 from sqlalchemy.orm import Session
 
+from sqlalchemy import func
+
 from app import models  # noqa: F401  (imported so SQLAlchemy registers the Ticket table)
 from app.db import Base, engine, get_db
 
@@ -9,7 +11,7 @@ from app.auth import require_hr
 from app.config import settings
 from app.llm import draft_reply, extract
 from app.models import Ticket
-from app.schemas import RequestIn, TicketCreated, TicketHR, TicketUpdate
+from app.schemas import RequestIn, TicketCreated, TicketHR, TicketUpdate, StatsOut
 from app.routing import route
 
 import logging
@@ -23,9 +25,9 @@ app = FastAPI(title=settings.app_name)
 
 setup_logging()
 
-
-@app.middleware("http")
-async def add_request_id(request: Request, call_next):
+ 
+@app.middleware("http") #It’s a wrapper around every endpoint: every request passes through it on the way in and on the way out.
+async def add_request_id(request: Request, call_next): # No Endpoint
     """Give every request an ID, and log how long it took."""
     request_id = uuid.uuid4().hex[:8]
     request_id_var.set(request_id)
@@ -144,7 +146,27 @@ def update_ticket(ticket_id: int, update: TicketUpdate, db: Session = Depends(ge
         ticket.status = "approved"
 
         log_event("ticket_approved", ticket_id=ticket.id, edited=ticket.edited)
-        
+
     db.commit()
     db.refresh(ticket)
     return ticket
+
+@app.get("/stats", response_model=StatsOut, dependencies=[Depends(require_hr)])
+def get_stats(db: Session = Depends(get_db)):
+    total = db.query(func.count(Ticket.id)).scalar()
+    in_review = db.query(func.count(Ticket.id)).filter(Ticket.needs_review == True).scalar()
+    approved = db.query(func.count(Ticket.id)).filter(Ticket.status == "approved").scalar()
+    edited = (
+        db.query(func.count(Ticket.id))
+        .filter(Ticket.status == "approved", Ticket.edited == True)
+        .scalar()
+    )
+    per_category = db.query(Ticket.category, func.count(Ticket.id)).group_by(Ticket.category).all()
+
+    return StatsOut(
+        total_tickets=total,
+        approved_tickets=approved,
+        review_rate=round(in_review / total, 2) if total else 0.0,
+        edited_rate=round(edited / approved, 2) if approved else None,
+        tickets_per_category={category or "failed": count for category, count in per_category},
+    )

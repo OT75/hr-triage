@@ -105,3 +105,12 @@ class TicketUpdate(BaseModel):
 
     reply: str | None = None
     approve: bool = False
+
+class StatsOut(BaseModel):
+    """Business metrics for HR: is the AI actually useful?"""
+
+    total_tickets: int
+    approved_tickets: int
+    review_rate: float                 # share of all tickets flagged for review
+    edited_rate: float | None          # share of APPROVED tickets where HR changed the draft
+    tickets_per_category: dict[str, int]
