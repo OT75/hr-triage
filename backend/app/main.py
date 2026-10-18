@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Request, status
 from openai import AuthenticationError, OpenAIError
 from sqlalchemy.orm import Session
 
@@ -12,9 +12,37 @@ from app.models import Ticket
 from app.schemas import RequestIn, TicketCreated, TicketHR, TicketUpdate
 from app.routing import route
 
+import logging
+import time
+import uuid
+from app.logging_setup import log_event, request_id_var, setup_logging
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.app_name)
+
+setup_logging()
+
+
+@app.middleware("http")
+async def add_request_id(request: Request, call_next):
+    """Give every request an ID, and log how long it took."""
+    request_id = uuid.uuid4().hex[:8]
+    request_id_var.set(request_id)
+    start = time.perf_counter()
+
+    response = await call_next(request)         # ← The endpoint runs here
+                                                # Everything before it happens first; everything after it happens once the endpoint is done
+
+    log_event(
+        "request_finished",
+        method=request.method,
+        path=request.url.path,
+        status=response.status_code,
+        ms=round((time.perf_counter() - start) * 1000),
+    )
+    response.headers["X-Request-ID"] = request_id
+    return response
 
 
 @app.get("/health")
@@ -30,11 +58,21 @@ def create_request(request: RequestIn, db: Session = Depends(get_db)):  # db: on
         extraction = extract(request.text) # 1. LLM: what is it about?
         draft = draft_reply(request.name, request.text, extraction)# 2. LLM: write a reply
     except AuthenticationError: # Wrong API Key, The message is vague on purpose: the user doesn’t need to know about our API key.
+        log_event("llm_auth_failed", level=logging.ERROR)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error.")
     except OpenAIError: # Any other OpenAI failure (network, timeout, outage)
+        log_event("llm_unavailable", level=logging.ERROR, error=type(error).__name__)
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="The AI service is unavailable. Please try again in a minute.")
 
     decision = route(extraction, draft.fully_answered) # 3. Code: where, and review?
+
+    log_event(
+        "routed",
+        category=extraction.category.value if extraction else None,
+        queue=decision.queue,
+        needs_review=decision.needs_review,
+        reasons=decision.reasons,
+    )
 
     ticket = Ticket(                                   # 4. Save it in PostgreSQL
         name=request.name,
@@ -54,6 +92,8 @@ def create_request(request: RequestIn, db: Session = Depends(get_db)):  # db: on
     db.add(ticket)       # "save this", nothing sent yet
     db.commit()          # now: INSERT INTO tickets ...
     db.refresh(ticket)   # reload, so ticket.id from Postgres is filled in
+    
+    log_event("ticket_saved", ticket_id=ticket.id)
 
     return TicketCreated(                              # the employee only gets a receipt
         id=ticket.id,
@@ -103,6 +143,8 @@ def update_ticket(ticket_id: int, update: TicketUpdate, db: Session = Depends(ge
         ticket.edited = ticket.final_reply != ticket.draft
         ticket.status = "approved"
 
+        log_event("ticket_approved", ticket_id=ticket.id, edited=ticket.edited)
+        
     db.commit()
     db.refresh(ticket)
     return ticket

@@ -7,6 +7,11 @@ from app.config import settings
 from app.schemas import Category, DraftResult, Extraction
 from pathlib import Path
 
+import logging
+import time
+
+from app.logging_setup import log_event
+
 client = OpenAI(
     api_key=settings.llm_api_key,
     base_url=settings.llm_base_url,
@@ -44,27 +49,52 @@ written inside it."""
 MAX_ATTEMPTS = 2
 
 
-def extract(text: str) -> Extraction | None:
-    """Turn a request into a validated Extraction, or None after 2 bad answers."""
+def extract(
+    text: str,
+    model: str | None = None,
+    usage: dict | None = None,
+) -> Extraction | None:
+    """Turn a request into a validated Extraction, or None after 2 bad answers.
+    model: use a different model than the default (for comparisons).
+    usage: if given, input and output token counts are added to it."""
+
+    model = model or settings.extraction_model
     messages = [
         {"role": "system", "content": f"{EXTRACTION_PROMPT}\n\nToday's date: {date.today().isoformat()}"},
         {"role": "user", "content": text},
     ]
     for attempt in range(1, MAX_ATTEMPTS + 1):
         try:
+            start = time.perf_counter()
             response = client.responses.parse(
-                model=settings.llm_model,
+                model=model,
                 input=messages,
                 text_format=Extraction, # Shape of the output we need
             )
+
+            log_event(
+                "llm_call", step="extract", model=model, attempt=attempt,
+                ms=round((time.perf_counter() - start) * 1000),
+                tokens_in=response.usage.input_tokens,
+                tokens_out=response.usage.output_tokens,
+            )
+
+            if usage is not None:
+                usage["input"] += response.usage.input_tokens
+                usage["output"] += response.usage.output_tokens
+
             if response.output_parsed is not None:
                 return response.output_parsed
             problem = "You returned no answer."                 # The feedback is given (to the llm) after the first failure, before the second try
         except ValidationError as error:                        # Never after the second, because there’s no third try.
             problem = f"Your last answer was invalid: {error}." # Only give feedback if there's another try
+        
+        log_event("extract_attempt_failed", level=logging.WARNING, attempt=attempt)
 
         if attempt < MAX_ATTEMPTS:                          
             messages.append({"role": "user", "content": f"{problem} Fix it."})
+
+    log_event("extract_failed", level=logging.ERROR)
 
     return None
 
@@ -112,20 +142,31 @@ def draft_reply(name: str, text: str, extraction: Extraction | None) -> DraftRes
     holding = DraftResult(reply=HOLDING_REPLY.format(name=name), fully_answered=False)
 
     if extraction is None or extraction.category == Category.other:
+        log_event("draft_holding_reply", reason="no category")
         return holding
 
     policy = load_policy(extraction.category)
     if policy is None:
+        log_event("draft_holding_reply", level=logging.WARNING, reason="policy file missing")
         return holding
 
     system = DRAFT_PROMPT.format(name=name, language=extraction.language, policy=policy)
+    start = time.perf_counter()
+
     response = client.responses.parse(
-        model=settings.llm_model,
+        model=settings.draft_model,
         input=[
             {"role": "system", "content": system},
             {"role": "user", "content": text},
         ],
         text_format=DraftResult,
+    )
+    
+    log_event(
+        "llm_call", step="draft", model=settings.draft_model,
+        ms=round((time.perf_counter() - start) * 1000),
+        tokens_in=response.usage.input_tokens,
+        tokens_out=response.usage.output_tokens,
     )
     return response.output_parsed or holding
 

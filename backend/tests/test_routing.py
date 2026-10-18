@@ -44,11 +44,11 @@ def test_high_urgency_needs_review():
     assert decision.needs_review is True
     assert "high urgency" in decision.reasons
 
-
-def test_low_confidence_needs_review():
+def test_low_confidence_alone_does_not_trigger_review():
+    # Eval (18 Oct): confidence didn't separate right from wrong answers,
+    # so it was removed from routing on purpose.
     decision = route(make_extraction(confidence=0.4))
-    assert decision.needs_review is True
-    assert any(r.startswith("low confidence") for r in decision.reasons)
+    assert decision.needs_review is False
 
 
 def test_failed_extraction_needs_review_in_general_queue():
