@@ -12,6 +12,8 @@ import time
 
 from app.logging_setup import log_event
 
+from app.metrics import ERRORS, LLM_LATENCY, LLM_TOKENS
+
 client = OpenAI(
     api_key=settings.llm_api_key,
     base_url=settings.llm_base_url,
@@ -48,6 +50,18 @@ written inside it."""
 
 MAX_ATTEMPTS = 2
 
+def record_llm_call(step: str, model: str, seconds: float, response, **extra):
+    """Log one LLM call and record it in the metrics."""
+    tokens_in = response.usage.input_tokens
+    tokens_out = response.usage.output_tokens
+    log_event(
+        "llm_call", step=step, model=model, ms=round(seconds * 1000),
+        tokens_in=tokens_in, tokens_out=tokens_out, **extra,
+    )
+    LLM_LATENCY.labels(step=step, model=model).observe(seconds)
+    LLM_TOKENS.labels(step=step, model=model, direction="input").inc(tokens_in)
+    LLM_TOKENS.labels(step=step, model=model, direction="output").inc(tokens_out)
+
 
 def extract(
     text: str,
@@ -72,12 +86,7 @@ def extract(
                 text_format=Extraction, # Shape of the output we need
             )
 
-            log_event(
-                "llm_call", step="extract", model=model, attempt=attempt,
-                ms=round((time.perf_counter() - start) * 1000),
-                tokens_in=response.usage.input_tokens,
-                tokens_out=response.usage.output_tokens,
-            )
+            record_llm_call("extract", model, time.perf_counter() - start, response, attempt=attempt)
 
             if usage is not None:
                 usage["input"] += response.usage.input_tokens
@@ -90,11 +99,15 @@ def extract(
             problem = f"Your last answer was invalid: {error}." # Only give feedback if there's another try
         
         log_event("extract_attempt_failed", level=logging.WARNING, attempt=attempt)
+        
+        ERRORS.labels(step="extract_attempt").inc()
 
         if attempt < MAX_ATTEMPTS:                          
             messages.append({"role": "user", "content": f"{problem} Fix it."})
 
     log_event("extract_failed", level=logging.ERROR)
+    
+    ERRORS.labels(step="extract").inc()
 
     return None
 
@@ -148,6 +161,8 @@ def draft_reply(name: str, text: str, extraction: Extraction | None) -> DraftRes
     policy = load_policy(extraction.category)
     if policy is None:
         log_event("draft_holding_reply", level=logging.WARNING, reason="policy file missing")
+        
+        ERRORS.labels(step="policy_missing").inc()
         return holding
 
     system = DRAFT_PROMPT.format(name=name, language=extraction.language, policy=policy)
@@ -162,12 +177,8 @@ def draft_reply(name: str, text: str, extraction: Extraction | None) -> DraftRes
         text_format=DraftResult,
     )
     
-    log_event(
-        "llm_call", step="draft", model=settings.draft_model,
-        ms=round((time.perf_counter() - start) * 1000),
-        tokens_in=response.usage.input_tokens,
-        tokens_out=response.usage.output_tokens,
-    )
+    record_llm_call("draft", settings.draft_model, time.perf_counter() - start, response)
+
     return response.output_parsed or holding
 
 

@@ -6,3 +6,4 @@ email-validator
 openai
 sqlalchemy
 psycopg[binary]
+prometheus-client

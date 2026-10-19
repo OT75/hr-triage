@@ -19,15 +19,25 @@ import time
 import uuid
 from app.logging_setup import log_event, request_id_var, setup_logging
 
+from prometheus_client import make_asgi_app
+
+from app.metrics import ERRORS, TICKETS
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.app_name)
+
+app.mount("/metrics", make_asgi_app())
 
 setup_logging()
 
  
 @app.middleware("http") #It’s a wrapper around every endpoint: every request passes through it on the way in and on the way out.
 async def add_request_id(request: Request, call_next): # No Endpoint
+    
+    if request.url.path.startswith("/metrics"):
+        return await call_next(request)       # don't log Prometheus' visits
+        
     """Give every request an ID, and log how long it took."""
     request_id = uuid.uuid4().hex[:8]
     request_id_var.set(request_id)
@@ -61,9 +71,11 @@ def create_request(request: RequestIn, db: Session = Depends(get_db)):  # db: on
         draft = draft_reply(request.name, request.text, extraction)# 2. LLM: write a reply
     except AuthenticationError: # Wrong API Key, The message is vague on purpose: the user doesn’t need to know about our API key.
         log_event("llm_auth_failed", level=logging.ERROR)
+        ERRORS.labels(step="llm_auth").inc()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error.")
     except OpenAIError: # Any other OpenAI failure (network, timeout, outage)
         log_event("llm_unavailable", level=logging.ERROR, error=type(error).__name__)
+        ERRORS.labels(step="llm_unavailable").inc()
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="The AI service is unavailable. Please try again in a minute.")
 
     decision = route(extraction, draft.fully_answered) # 3. Code: where, and review?
@@ -96,6 +108,7 @@ def create_request(request: RequestIn, db: Session = Depends(get_db)):  # db: on
     db.refresh(ticket)   # reload, so ticket.id from Postgres is filled in
     
     log_event("ticket_saved", ticket_id=ticket.id)
+    TICKETS.labels(category=ticket.category or "failed").inc()
 
     return TicketCreated(                              # the employee only gets a receipt
         id=ticket.id,
