@@ -7,3 +7,4 @@ openai
 sqlalchemy
 psycopg[binary]
 prometheus-client
+langfuse

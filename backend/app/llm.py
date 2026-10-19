@@ -14,6 +14,10 @@ from app.logging_setup import log_event
 
 from app.metrics import ERRORS, LLM_LATENCY, LLM_TOKENS
 
+from langfuse import get_client, observe
+
+langfuse = get_client()
+
 client = OpenAI(
     api_key=settings.llm_api_key,
     base_url=settings.llm_base_url,
@@ -62,7 +66,12 @@ def record_llm_call(step: str, model: str, seconds: float, response, **extra):
     LLM_TOKENS.labels(step=step, model=model, direction="input").inc(tokens_in)
     LLM_TOKENS.labels(step=step, model=model, direction="output").inc(tokens_out)
 
+    langfuse.update_current_generation(
+        model=model,
+        usage_details={"input": tokens_in, "output": tokens_out},
+    )
 
+@observe(as_type="generation", name="extract")
 def extract(
     text: str,
     model: str | None = None,
@@ -150,7 +159,7 @@ def load_policy(category: Category) -> str | None:
         return path.read_text(encoding="utf-8")
     return None
 
-
+@observe(as_type="generation", name="draft")
 def draft_reply(name: str, text: str, extraction: Extraction | None) -> DraftResult:
     holding = DraftResult(reply=HOLDING_REPLY.format(name=name), fully_answered=False)
 

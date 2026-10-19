@@ -1,5 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from dotenv import load_dotenv
 
+load_dotenv()   # also puts .env values into the environment, where Langfuse looks for its keys
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
@@ -11,7 +13,11 @@ class Settings(BaseSettings):
     llm_base_url: str | None = None       # None = OpenAI; set it to use another provider
     database_url: str
     hr_username: str = "hr"
-    hr_password: str                      # required: no password, no start
+    hr_password: str  
+                        # required: no password, no start
+    langfuse_public_key: str | None = None
+    langfuse_secret_key: str | None = None
+    langfuse_base_url: str | None = None
 
 
 

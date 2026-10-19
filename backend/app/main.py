@@ -23,6 +23,8 @@ from prometheus_client import make_asgi_app
 
 from app.metrics import ERRORS, TICKETS
 
+from langfuse import observe
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.app_name)
@@ -37,7 +39,7 @@ async def add_request_id(request: Request, call_next): # No Endpoint
     
     if request.url.path.startswith("/metrics"):
         return await call_next(request)       # don't log Prometheus' visits
-        
+
     """Give every request an ID, and log how long it took."""
     request_id = uuid.uuid4().hex[:8]
     request_id_var.set(request_id)
@@ -65,6 +67,7 @@ def health():
 # ---------- Employee side ----------
 
 @app.post("/requests", response_model=TicketCreated, status_code=status.HTTP_201_CREATED)
+@observe(name="hr_request", capture_input=False) # capture_input is false for data privacy of employees (Name, Email)
 def create_request(request: RequestIn, db: Session = Depends(get_db)):  # db: one session per request, closed afterwards
     try:
         extraction = extract(request.text) # 1. LLM: what is it about?
