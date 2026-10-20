@@ -25,9 +25,19 @@ from app.metrics import ERRORS, TICKETS
 
 from langfuse import observe
 
+from fastapi.middleware.cors import CORSMiddleware
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.app_name)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,   # which websites may call this API (For Development: allow_origins=["*"]), but never in a real HR system
+    allow_methods=["*"],                   # GET, POST, PATCH...
+    allow_headers=["*"],                   # e.g. Content-Type, Authorization
+    expose_headers=["X-Request-ID"],       # let the frontend read the request ID
+)
 
 app.mount("/metrics", make_asgi_app())
 
@@ -66,8 +76,8 @@ def health():
 
 # ---------- Employee side ----------
 
-@app.post("/requests", response_model=TicketCreated, status_code=status.HTTP_201_CREATED)
-@observe(name="hr_request", capture_input=False) # capture_input is false for data privacy of employees (Name, Email)
+@app.post("/requests", response_model=TicketCreated, status_code=status.HTTP_201_CREATED) # after the observe (Bottom up order)
+@observe(name="hr_request", capture_input=False) # capture_input is false for data privacy of employees (Name, Email) records extract/draft functions outputs
 def create_request(request: RequestIn, db: Session = Depends(get_db)):  # db: one session per request, closed afterwards
     try:
         extraction = extract(request.text) # 1. LLM: what is it about?

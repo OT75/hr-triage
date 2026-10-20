@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     langfuse_public_key: str | None = None
     langfuse_secret_key: str | None = None
     langfuse_base_url: str | None = None
+    
+    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
 
 
