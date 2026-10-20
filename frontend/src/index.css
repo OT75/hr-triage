@@ -121,3 +121,10 @@ form, section {
 label { display: flex; flex-direction: column; gap: 4px; }
 input, textarea { padding: 8px; font: inherit; }
 [role="alert"] { color: #d33; }
+
+nav { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
+section.dashboard { max-width: 1100px; }
+.filters { display: flex; gap: 16px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border-bottom: 1px solid #555; padding: 8px; text-align: left; vertical-align: top; }
+tr.review { background: rgba(255, 170, 0, 0.15); }

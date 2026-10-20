@@ -140,15 +140,15 @@ def get_ticket_or_404(db: Session, ticket_id: int) -> Ticket:
 
 @app.get("/tickets", response_model=list[TicketHR], dependencies=[Depends(require_hr)])
 def list_tickets(
-    ticket_status: str | None = None,   # e.g. ?ticket_status=new
-    queue: str | None = None,           # e.g. ?queue=time-off
+    status_filter: str | None = None,   # e.g. ?status_filter=new
+    queue_filter: str | None = None,    # e.g. ?queue_filter=time-off
     db: Session = Depends(get_db),
 ):
     query = db.query(Ticket)
-    if ticket_status:
-        query = query.filter(Ticket.status == ticket_status)
-    if queue:
-        query = query.filter(Ticket.queue == queue)
+    if status_filter:
+        query = query.filter(Ticket.status == status_filter)
+    if queue_filter:
+        query = query.filter(Ticket.queue == queue_filter)
     return query.order_by(Ticket.needs_review.desc(), Ticket.created_at.desc()).all()
 
 
