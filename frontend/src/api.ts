@@ -1,6 +1,21 @@
+import type { RequestIn, Stats, TicketCreated, TicketHR, TicketUpdate } from "./types";
+
 const API_URL = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";
 
-import type { RequestIn, TicketCreated, TicketHR, TicketUpdate  } from "./types";
+// ---------- Errors ----------
+
+// A specific error type, so the dashboard can tell "wrong password" apart from other errors
+export class UnauthorizedError extends Error {}
+
+function friendlyError(status: number): string {
+  if (status === 404) return "This ticket doesn't exist.";
+  if (status === 409) return "This ticket has already been approved.";
+  if (status === 422) return "Please check your input: a valid email and a short description of your question.";
+  if (status === 503) return "The service is busy right now. Please try again in a minute.";
+  return `Something went wrong (error ${status}). Please try again.`;
+}
+
+// ---------- Employee side (no login) ----------
 
 export async function getHealth(): Promise<{ status: string }> {
   const response = await fetch(`${API_URL}/health`);
@@ -29,21 +44,12 @@ export async function createRequest(data: RequestIn): Promise<TicketCreated> {
   return response.json();
 }
 
-function friendlyError(status: number): string {
-  if (status === 404) return "This ticket doesn't exist.";
-  if (status === 409) return "This ticket has already been approved.";
-  if (status === 422) return "Please check your input: a valid email and a short description of your question.";
-  if (status === 503) return "The service is busy right now. Please try again in a minute.";
-  return `Something went wrong (error ${status}). Please try again.`;
-}
+// ---------- HR side (login required) ----------
 
 export interface Credentials {
   username: string;
   password: string;
 }
-
-// A specific error type, so the dashboard can tell "wrong password" apart from other errors
-export class UnauthorizedError extends Error {}
 
 function authHeader(credentials: Credentials): string {
   return "Basic " + btoa(`${credentials.username}:${credentials.password}`);
@@ -95,5 +101,10 @@ export async function updateTicket(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(update),
   });
+  return response.json();
+}
+
+export async function getStats(credentials: Credentials): Promise<Stats> {
+  const response = await hrFetch(credentials, "/stats");
   return response.json();
 }

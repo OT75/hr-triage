@@ -3,6 +3,13 @@ import type { FormEvent } from "react";
 import { createRequest } from "./api";
 import type { TicketCreated } from "./types";
 
+// One click fills the question: friendly for employees, fast for live demos
+const EXAMPLES = [
+  "How many vacation days do I have left?",
+  "My payslip is missing my overtime.",
+  "I need an employment certificate for my landlord.",
+];
+
 function RequestForm() {
   // What the employee types
   const [name, setName] = useState("");
@@ -31,37 +38,48 @@ function RequestForm() {
   // After success: show the receipt instead of the form
   if (ticket) {
     return (
-      <section>
+      <div className="card narrow success">
         <h2>Request received</h2>
+        <p className="muted">Your ticket number</p>
+        <p className="ticket-number">#{ticket.id}</p>
         <p>{ticket.message}</p>
-        <p>Your ticket number: <strong>#{ticket.id}</strong></p>
         <button onClick={() => { setTicket(null); setText(""); }}>
           Send another request
         </button>
-      </section>
+      </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="card narrow">
       <h2>Ask HR</h2>
-      <label>
-        Name
-        <input value={name} onChange={(e) => setName(e.target.value)} required />
-      </label>
-      <label>
-        Email
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </label>
-      <label>
-        Your question
-        <textarea value={text} onChange={(e) => setText(e.target.value)} rows={5} required />
-      </label>
-      {error && <p role="alert">{error}</p>}
-      <button type="submit" disabled={loading}>
-        {loading ? "Sending..." : "Send"}
-      </button>
-    </form>
+      <p className="muted">Describe your question in any language. HR will reply by email.</p>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name
+          <input value={name} onChange={(e) => setName(e.target.value)} required />
+        </label>
+        <label>
+          Email
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </label>
+        <label>
+          Your question
+          <textarea value={text} onChange={(e) => setText(e.target.value)} rows={6} required />
+        </label>
+        <div className="chips">
+          {EXAMPLES.map((example) => (
+            <button type="button" key={example} className="chip" onClick={() => setText(example)}>
+              {example}
+            </button>
+          ))}
+        </div>
+        {error && <p role="alert">{error}</p>}
+        <button type="submit" className="primary" disabled={loading}>
+          {loading ? "Sending..." : "Send request"}
+        </button>
+      </form>
+    </div>
   );
 }
 

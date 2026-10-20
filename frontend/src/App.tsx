@@ -6,14 +6,28 @@ function App() {
   const [view, setView] = useState<"employee" | "hr">("employee");
 
   return (
-    <main>
-      <h1>HR Triage</h1>
-      <nav>
-        <button onClick={() => setView("employee")} disabled={view === "employee"}>Employee</button>
-        <button onClick={() => setView("hr")} disabled={view === "hr"}>HR</button>
-      </nav>
-      {view === "employee" ? <RequestForm /> : <HRDashboard />}
-    </main>
+    <>
+      <header className="topbar">
+        <div className="brand">HR Triage</div>
+        <nav className="tabs">
+          <button
+            className={view === "employee" ? "tab active" : "tab"}
+            onClick={() => setView("employee")}
+          >
+            Ask HR
+          </button>
+          <button
+            className={view === "hr" ? "tab active" : "tab"}
+            onClick={() => setView("hr")}
+          >
+            HR dashboard
+          </button>
+        </nav>
+      </header>
+      <main className="container">
+        {view === "employee" ? <RequestForm /> : <HRDashboard />}
+      </main>
+    </>
   );
 }
 

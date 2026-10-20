@@ -40,3 +40,11 @@ export interface TicketUpdate {
   reply?: string;
   approve?: boolean;
 }
+
+export interface Stats {
+  total_tickets: number;
+  approved_tickets: number;
+  review_rate: number;
+  edited_rate: number | null;
+  tickets_per_category: Record<string, number>;
+}
