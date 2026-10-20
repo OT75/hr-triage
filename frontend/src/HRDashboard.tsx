@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { listTickets, UnauthorizedError } from "./api";
 import type { Credentials } from "./api";
 import type { TicketHR } from "./types";
+import TicketDetail from "./TicketDetail";
 
 // Must match the queue names in backend/app/routing.py
 const QUEUES = ["", "payroll", "time-off", "documents", "benefits", "onboarding", "general"];
@@ -32,7 +33,13 @@ function HRLogin({ onLogin }: { onLogin: (credentials: Credentials) => void }) {
   );
 }
 
-function TicketTable({ tickets }: { tickets: TicketHR[] }) {
+function TicketTable({
+  tickets,
+  onSelect,
+}: {
+  tickets: TicketHR[];
+  onSelect: (id: number) => void;
+}) {
   if (tickets.length === 0) {
     return <p>No tickets match these filters.</p>;
   }
@@ -51,7 +58,11 @@ function TicketTable({ tickets }: { tickets: TicketHR[] }) {
       </thead>
       <tbody>
         {tickets.map((t) => (
-          <tr key={t.id} className={t.needs_review ? "review" : ""}>
+          <tr
+            key={t.id}
+            className={t.needs_review ? "review" : ""}
+            onClick={() => onSelect(t.id)}
+          >
             <td>{t.id}</td>
             <td>{new Date(t.created_at).toLocaleString()}</td>
             <td>{t.category ?? "failed"}</td>
@@ -73,10 +84,11 @@ function HRDashboard() {
   const [tickets, setTickets] = useState<TicketHR[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);   // null = show the list
 
-  // Load tickets whenever the login or a filter changes
+  // Load the list when the login or a filter changes, and again when Lisa comes back from a ticket
   useEffect(() => {
-    if (!credentials) return;
+    if (!credentials || selectedId !== null) return;
     setLoading(true);
     setError(null);
     listTickets(credentials, { queue, status })
@@ -86,7 +98,7 @@ function HRDashboard() {
         if (err instanceof UnauthorizedError) setCredentials(null);   // back to the login form
       })
       .finally(() => setLoading(false));
-  }, [credentials, queue, status]);
+  }, [credentials, queue, status, selectedId]);
 
   if (!credentials) {
     return (
@@ -94,6 +106,16 @@ function HRDashboard() {
         {error && <p role="alert">{error}</p>}
         <HRLogin onLogin={setCredentials} />
       </>
+    );
+  }
+
+  if (selectedId !== null) {
+    return (
+      <TicketDetail
+        credentials={credentials}
+        ticketId={selectedId}
+        onBack={() => setSelectedId(null)}
+      />
     );
   }
 
@@ -119,7 +141,7 @@ function HRDashboard() {
         </label>
       </div>
       {error && <p role="alert">{error}</p>}
-      {loading ? <p>Loading...</p> : <TicketTable tickets={tickets} />}
+      {loading ? <p>Loading...</p> : <TicketTable tickets={tickets} onSelect={setSelectedId} />}
     </section>
   );
 }
