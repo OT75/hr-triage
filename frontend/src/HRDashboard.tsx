@@ -120,10 +120,10 @@ function HRDashboard() {
   // Load the list and the stats when the login or a filter changes,
   // and again when Lisa comes back from a ticket
   useEffect(() => {
-    if (!credentials || selectedId !== null) return;
+    if (!credentials || selectedId !== null) return; // Don't load if no login was made (quits the whole HR function)
     setLoading(true);
     setError(null);
-    Promise.all([listTickets(credentials, { queue, status }), getStats(credentials)])
+    Promise.all([listTickets(credentials, { queue, status }), getStats(credentials)]) // Start both requests (list tickets and get stats) at the same time, and wait until both finish.
       .then(([list, newStats]) => {
         setTickets(list);
         setStats(newStats);
@@ -133,7 +133,7 @@ function HRDashboard() {
         if (err instanceof UnauthorizedError) setCredentials(null);   // back to the login form
       })
       .finally(() => setLoading(false));
-  }, [credentials, queue, status, selectedId]);
+  }, [credentials, queue, status, selectedId]); // reload if any of these change
 
   if (!credentials) {
     return (
