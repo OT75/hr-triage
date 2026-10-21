@@ -5,4 +5,4 @@ scrape_configs:
   - job_name: "hr-triage" # a name for this app
     metrics_path: /metrics/ # the page to read
     static_configs:
-      - targets: ["host.docker.internal:8000"] # where your app is, seen from Docker
+      - targets: ["backend:8000"] # where your app is, seen from Docker
