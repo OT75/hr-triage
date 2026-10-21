@@ -4,7 +4,7 @@ from openai import OpenAI
 from pydantic import ValidationError
 
 from app.config import settings
-from app.schemas import Category, DraftResult, Extraction
+from app.schemas import CATEGORY_DEFINITIONS, Category, DraftResult, Extraction
 from pathlib import Path
 
 import logging
@@ -27,18 +27,15 @@ client = OpenAI(
     # If you ever switch to an older model, add it there.
 )
 
-EXTRACTION_PROMPT = """You classify HR requests written by factory employees.
+CATEGORY_LINES = "\n".join(
+    f"- {category.value}: {definition}"
+    for category, definition in CATEGORY_DEFINITIONS.items()
+)
+
+EXTRACTION_PROMPT = f"""You classify HR requests written by factory employees.
 
 Categories:
-- payroll: salary, payslips, overtime pay, tax forms
-- leave: vacation, sick leave, parental leave, time off
-- documents: employment certificates, contract copies, reference letters
-- benefits: health insurance, pension, company perks, transport
-- onboarding: only for NEW employees in their first weeks: first-day setup,
-  access badges, initial equipment, training
-- other: anything else, including IT problems of existing employees,
-  complaints or conflicts with managers or colleagues, and requests
-  that are not about HR
+{CATEGORY_LINES}
 
 Urgency:
 - high: a deadline within 3 days, or the employee is losing pay or access

@@ -1,5 +1,5 @@
 from app.routing import route
-from app.schemas import Category, Extraction, Urgency
+from app.schemas import Category, Extraction, Urgency, CATEGORY_DEFINITIONS
 
 
 def make_extraction(**changes):
@@ -55,3 +55,8 @@ def test_failed_extraction_needs_review_in_general_queue():
     decision = route(None)
     assert decision.needs_review is True
     assert decision.queue == "general"
+
+
+def test_every_category_has_a_definition():
+    for category in Category:
+        assert category in CATEGORY_DEFINITIONS

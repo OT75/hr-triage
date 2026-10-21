@@ -14,6 +14,25 @@ class Category(str, Enum):
     other = "other"
 
 
+# What each category means. The extraction prompt is built from this,
+# so adding a category = one enum line + one definition here.
+CATEGORY_DEFINITIONS = {
+    Category.payroll: "salary, payslips, overtime pay, tax forms",
+    Category.leave: "vacation, sick leave, parental leave, time off",
+    Category.documents: "employment certificates, contract copies, reference letters",
+    Category.benefits: "health insurance, pension, company perks, transport",
+    Category.onboarding: (
+        "only for NEW employees in their first weeks: first-day setup, "
+        "access badges, initial equipment, training"
+    ),
+    Category.other: (
+        "anything else, including IT problems of existing employees, "
+        "complaints or conflicts with managers or colleagues, "
+        "and requests that are not about HR"
+    ),
+}
+
+
 class Urgency(str, Enum):
     low = "low"
     medium = "medium"
