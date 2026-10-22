@@ -185,7 +185,7 @@ def draft_reply(name: str, text: str, extraction: Extraction | None) -> DraftRes
     
     record_llm_call("draft", settings.draft_model, time.perf_counter() - start, response)
 
-    return response.output_parsed or holding
+    return response.output_parsed or holding # Extraction succeeded however a parsing problem happend (ex: hit token limit -> returned an invalid None json)
 
 
 if __name__ == "__main__":

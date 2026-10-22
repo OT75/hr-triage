@@ -30,7 +30,7 @@ def route(extraction: Extraction | None, draft_complete: bool = True) -> Routing
         names = ", ".join(t.value for t in extra_topics)
 
         reasons.append(f"also asks about: {names}")
-    if not draft_complete:                                  # new
+    if not draft_complete:                                  
         reasons.append("draft could not answer everything")
         
     return RoutingDecision(
