@@ -1,0 +1,416 @@
+[
+  {
+    "id": 1,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, thanks for flagging this. If there’s an error on your payslip, it is corrected with the next salary payment. If more than 200 EUR is missing, it is corrected within 5 working days. HR will follow up on the night-shift bonus separately.",
+    "fully_answered": false,
+    "seconds": 1.42,
+    "input": 386,
+    "output": 75
+  },
+  {
+    "id": 1,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for flagging this. Payslips are available in the employee portal from the 25th. If there’s an error on your payslip, it will be corrected with the next salary payment. If more than 200 EUR is missing, corrections can be made within 5 working days.\n\nHR will follow up with the details of the missing night-shift bonus to confirm the amount and ensure it’s corrected accordingly.\n\nBest regards,\nHR",
+    "fully_answered": false,
+    "seconds": 2.12,
+    "input": 386,
+    "output": 117
+  },
+  {
+    "id": 2,
+    "model": "gpt-5.4-mini",
+    "reply": "Hallo Alex, das Gehalt wird am letzten Arbeitstag des Monats überwiesen. Wenn du möchtest, kann ich auch beim Thema Gehaltsabrechnung helfen; das würde ich separat klären. Viele Grüße, HR",
+    "fully_answered": true,
+    "seconds": 1.41,
+    "input": 384,
+    "output": 60
+  },
+  {
+    "id": 2,
+    "model": "gpt-5.4-nano",
+    "reply": "Hallo Alex,\n\ndas Gehalt wird am letzten Arbeitstag des Monats überwiesen.\n\nWie gewohnt findest du den Gehaltsnachweis ab dem 25. im Mitarbeiterportal. \n\nFalls es bei einem Gehaltsnachweis Fehler gibt, werden diese mit der nächsten Gehaltszahlung korrigiert (oder innerhalb von 5 Arbeitstagen, falls mehr als 200 EUR fehlen).\n\nViele Grüße\nHR",
+    "fully_answered": true,
+    "seconds": 1.81,
+    "input": 384,
+    "output": 105
+  },
+  {
+    "id": 3,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, thanks for your request. Vacation requests need to be submitted at least 2 weeks in advance. If you send it in on time, HR can help with the booking. HR will follow up if anything else is needed.",
+    "fully_answered": false,
+    "seconds": 1.88,
+    "input": 390,
+    "output": 64
+  },
+  {
+    "id": 3,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for reaching out. Vacation days are available, and requests must be submitted at least 2 weeks in advance. Based on the dates (3 to 7 November), please confirm that your request is being submitted at least 2 weeks ahead of 3 November.\n\nAlso note that up to 5 unused days can be carried over until 31 March of the next year.\n\nHR will follow up on the availability/approval details for 3–7 November.",
+    "fully_answered": false,
+    "seconds": 1.84,
+    "input": 390,
+    "output": 118
+  },
+  {
+    "id": 4,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, please inform your team lead before your shift starts. If your illness lasts 3 days or more, a doctor’s note is required from the 3rd day. HR will follow up if you need anything else.",
+    "fully_answered": true,
+    "seconds": 1.33,
+    "input": 394,
+    "output": 63
+  },
+  {
+    "id": 4,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nI’m sorry you’re not feeling well. Please inform your team lead before your shift starts. If you’re ill for 3 days or more, you’ll need a doctor’s note.\n\nHR will follow up on any additional details not covered here.\n",
+    "fully_answered": false,
+    "seconds": 1.47,
+    "input": 394,
+    "output": 76
+  },
+  {
+    "id": 5,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex,\n\nThanks for your request. Employment certificates are issued within 3 working days.\n\nBest,\nHR",
+    "fully_answered": true,
+    "seconds": 1.63,
+    "input": 347,
+    "output": 44
+  },
+  {
+    "id": 5,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for reaching out. HR can issue an employment certificate within 3 working days.\n\nPlease note that we’ll provide the certificate based on your request details—HR will follow up on what specific information is needed for the apartment purpose.\n\nReference letters are handled separately and have a different timeline.\n\nBest regards,\nHR",
+    "fully_answered": false,
+    "seconds": 1.84,
+    "input": 347,
+    "output": 91
+  },
+  {
+    "id": 6,
+    "model": "gpt-5.4-mini",
+    "reply": "Hallo Alex, gerne. Kopien des Arbeitsvertrags kannst du im Mitarbeiterportal herunterladen. Wenn du dazu Unterstützung brauchst, meld dich gern bei uns. Viele Grüße, HR",
+    "fully_answered": true,
+    "seconds": 1.22,
+    "input": 351,
+    "output": 52
+  },
+  {
+    "id": 6,
+    "model": "gpt-5.4-nano",
+    "reply": "Hallo Alex, \n\ngern. Vertragskopien kannst du direkt im Mitarbeiterportal herunterladen. \n\nFalls du dabei Unterstützung brauchst oder etwas anderes benötigst (z. B. ein Arbeitszeugnis oder eine Referenz), wird HR sich dazu separat bei dir melden.\n\nViele Grüße\nHR",
+    "fully_answered": true,
+    "seconds": 1.51,
+    "input": 351,
+    "output": 80
+  },
+  {
+    "id": 7,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex,\n\nYou’re enrolled in the company pension plan after 6 months with the company. If you have any questions about the pension plan, the benefits team can help.\n\nBest,\nHR",
+    "fully_answered": true,
+    "seconds": 1.18,
+    "input": 351,
+    "output": 61
+  },
+  {
+    "id": 7,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nYou’re enrolled in the company pension plan after 6 months.\n\nIf you have any further questions about the pension plan, HR will connect you with the benefits team.\n\nBest regards,\nHR",
+    "fully_answered": true,
+    "seconds": 4.13,
+    "input": 351,
+    "output": 65
+  },
+  {
+    "id": 8,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex,\n\nYes — a public transport ticket subsidy is available from your first month. If you’d like more details, the benefits team can help.\n\nBest,\nHR",
+    "fully_answered": true,
+    "seconds": 1.07,
+    "input": 351,
+    "output": 56
+  },
+  {
+    "id": 8,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex, yes—there is a public transport ticket subsidy available starting from your first month.",
+    "fully_answered": true,
+    "seconds": 1.07,
+    "input": 351,
+    "output": 36
+  },
+  {
+    "id": 9,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex,\n\nYou’ll receive your access badge on your first day. If anything is missing after your first 3 working days, HR will escalate it to IT.\n\nBest,\nHR",
+    "fully_answered": true,
+    "seconds": 1.06,
+    "input": 360,
+    "output": 59
+  },
+  {
+    "id": 9,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nWelcome! New employees receive their access badge on their first day. The specific pickup location isn’t listed here, so HR will follow up with that detail for you.\n\nThanks,",
+    "fully_answered": false,
+    "seconds": 1.42,
+    "input": 360,
+    "output": 60
+  },
+  {
+    "id": 10,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, thanks for letting us know. Laptops and accounts are set up within the first 3 working days. If yours is still missing after 3 days, HR will escalate it to IT. We’ll follow up on this for you.",
+    "fully_answered": true,
+    "seconds": 1.17,
+    "input": 358,
+    "output": 67
+  },
+  {
+    "id": 10,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for letting us know. Our process is to have laptops and accounts set up within the first 3 working days. Since it’s your third day and your laptop still isn’t set up, HR will escalate this to IT.\n\nIf anything else is missing, HR will follow up on that part as well.\n\nBest regards,\nHR",
+    "fully_answered": true,
+    "seconds": 1.98,
+    "input": 358,
+    "output": 94
+  },
+  {
+    "id": 11,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, thanks for reaching out. We’ll look into the payslip error and correct it with the next salary payment, or within 5 working days if more than 200 EUR is missing. The reference letter request will be handled separately, and HR will follow up on that part.",
+    "fully_answered": false,
+    "seconds": 1.94,
+    "input": 387,
+    "output": 75
+  },
+  {
+    "id": 11,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nSorry about the mistake on your payslip. If an error is found, it will be corrected with the next salary payment; if more than 200 EUR is missing, it will be corrected within 5 working days.\n\nFor the reference letter request, HR will follow up on that part separately.\n\nBest regards,\nHR Team",
+    "fully_answered": false,
+    "seconds": 1.58,
+    "input": 387,
+    "output": 92
+  },
+  {
+    "id": 12,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex,\n\nYou can request Friday off, but vacation requests need to be submitted at least 2 weeks in advance. If you send the request now, HR will review it.\n\nI don’t have information here about when you join the pension plan, so HR will follow up on that separately.\n\nBest,\nHR",
+    "fully_answered": false,
+    "seconds": 1.25,
+    "input": 392,
+    "output": 87
+  },
+  {
+    "id": 12,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nFor taking Friday off: vacation requests must be submitted at least 2 weeks in advance. Please submit your request as soon as possible so HR can review it.\n\nRegarding when you join the pension plan: our current guidance doesn’t cover pension enrollment timing. HR will follow up on that part.\n\nBest regards,\nHR Team",
+    "fully_answered": false,
+    "seconds": 1.57,
+    "input": 392,
+    "output": 91
+  },
+  {
+    "id": 13,
+    "model": "gpt-5.4-mini",
+    "reply": "Hallo Alex, danke für deine Nachricht. Dein Ausweis wird dir am ersten Arbeitstag ausgehändigt. Laptops und Konten werden innerhalb der ersten 3 Arbeitstage eingerichtet. Wenn nach 3 Tagen noch etwas fehlt, geben wir es an IT weiter. Zu deinem Urlaubsanspruch melde ich mich separat, dazu folgt noch eine Rückmeldung von HR.",
+    "fully_answered": false,
+    "seconds": 1.61,
+    "input": 366,
+    "output": 91
+  },
+  {
+    "id": 13,
+    "model": "gpt-5.4-nano",
+    "reply": "Hallo Alex,\n\nwillkommen bei uns! Laut unserem Prozess erhältst du deinen Zugangsausweis am ersten Arbeitstag.\n\nZu deiner Frage, wann du Urlaub nehmen darfst: Dazu gibt es hier keine Informationen. HR wird das für dich gesondert klären.\n\nViele Grüße\nHR-Team",
+    "fully_answered": false,
+    "seconds": 1.56,
+    "input": 366,
+    "output": 81
+  },
+  {
+    "id": 20,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, full-time employees get 30 vacation days per calendar year. If you’d like help checking how many you have left, HR can follow up on that. Anything else in your request will be handled separately.",
+    "fully_answered": false,
+    "seconds": 1.02,
+    "input": 393,
+    "output": 61
+  },
+  {
+    "id": 20,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nFor full-time employees, you receive 30 vacation days per calendar year. How many vacation days you have left is not specified here, so HR will follow up on your exact remaining balance. If you need to submit a vacation request, please do so at least 2 weeks in advance.\n\nBest regards,\nHR",
+    "fully_answered": false,
+    "seconds": 1.28,
+    "input": 393,
+    "output": 88
+  },
+  {
+    "id": 21,
+    "model": "gpt-5.4-mini",
+    "reply": "Hallo Alex, vielen Dank für deine Nachricht. Gehälter werden am letzten Arbeitstag des Monats ausgezahlt. Falls auf deiner Abrechnung ein Fehler vorliegt, wird er mit der nächsten Gehaltszahlung korrigiert; fehlt mehr als 200 EUR, erfolgt die Korrektur innerhalb von 5 Arbeitstagen. Wir prüfen das dringend und melden uns dazu schnellstmöglich bei dir. Die Mietzahlung können wir separat behandeln.",
+    "fully_answered": false,
+    "seconds": 1.17,
+    "input": 396,
+    "output": 104
+  },
+  {
+    "id": 21,
+    "model": "gpt-5.4-nano",
+    "reply": "Hallo Alex,\n\ndanke für deine Nachricht. Gehaltszahlungen erfolgen am letzten Arbeitstag des Monats. Falls dein Gehalt noch nicht eingegangen ist, bitten wir dich, das bitte kurzfristig im Anschluss abzuklären; HR wird das als dringenden Fall prüfen und sich bei dir melden.\n\nKorrekturen bei Fehlern auf der Abrechnung werden mit der nächsten Gehaltszahlung vorgenommen (bzw. innerhalb von 5 Arbeitstagen, falls mehr als 200 EUR fehlen).\n\nOb es dafür heute bereits eine belastbare Ursache gibt, wird HR bei der Prüfung klären und dich dazu separat informieren.\n\nViele Grüße\nHR-Team",
+    "fully_answered": false,
+    "seconds": 1.65,
+    "input": 396,
+    "output": 154
+  },
+  {
+    "id": 22,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, thanks for reaching out. You become enrolled in the company pension plan after 6 months. If you have any other questions about the pension plan, the benefits team can help. Any other topics you mentioned will be handled separately.",
+    "fully_answered": true,
+    "seconds": 0.97,
+    "input": 403,
+    "output": 65
+  },
+  {
+    "id": 22,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for reaching out—and I’m glad to hear your early shift and the recent safety training have been going well.\n\nFor pension enrollment: all employees are enrolled in the company pension plan after 6 months.\n\nIf you have any further questions about the pension plan details, HR will connect you with the benefits team.\n\nBest regards,\nHR",
+    "fully_answered": true,
+    "seconds": 4.82,
+    "input": 403,
+    "output": 96
+  },
+  {
+    "id": 23,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, full-time employees get 30 vacation days per calendar year. If you’re asking about your remaining balance, HR will follow up on that part.",
+    "fully_answered": false,
+    "seconds": 1.46,
+    "input": 396,
+    "output": 49
+  },
+  {
+    "id": 23,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex, thanks for reaching out. Our current rule is that full-time employees receive 30 vacation days per calendar year. The exact number of days you have left this year isn’t specified here, so HR will follow up on that part. If you’re planning a vacation, requests should be submitted at least 2 weeks in advance. Unused days can be carried over up to 5 days until 31 March of the next year. Thanks!",
+    "fully_answered": false,
+    "seconds": 2.17,
+    "input": 396,
+    "output": 109
+  },
+  {
+    "id": 24,
+    "model": "gpt-5.4-mini",
+    "reply": "Hallo Alex,\n\ndanke für deine Nachricht. Arbeitsbescheinigungen werden innerhalb von 3 Arbeitstagen ausgestellt. Den anderen Punkt mit deinem Banktermin klären wir separat.\n\nViele Grüße\nHR",
+    "fully_answered": false,
+    "seconds": 1.06,
+    "input": 355,
+    "output": 63
+  },
+  {
+    "id": 24,
+    "model": "gpt-5.4-nano",
+    "reply": "Hallo Alex,\n\nvielen Dank für deine Nachricht. Arbeitsbescheinigungen werden innerhalb von 3 Arbeitstagen ausgestellt.\n\nFür die weitere Planung bis zu deinem Banktermin werden wir das mit dir abstimmen; zu Termindetails kann HR bei Bedarf separat nachhaken.\n\nViele Grüße\nHR",
+    "fully_answered": false,
+    "seconds": 1.3,
+    "input": 355,
+    "output": 84
+  },
+  {
+    "id": 25,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, thanks for reaching out. I can help with vacation and sick leave information, but I don’t have details here on how to apply for parental leave. HR will follow up on that part separately. If you also need help with any other leave types, let me know and we can handle those separately.",
+    "fully_answered": false,
+    "seconds": 2.49,
+    "input": 392,
+    "output": 80
+  },
+  {
+    "id": 25,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for reaching out. Our current leave guidelines cover vacation and sick leave, but they don’t include details on parental leave or the application process.\n\nHR will follow up with the specific steps for applying for parental leave for your situation. If you have any sick leave needs around the due date, please inform your team lead before your shift starts; a doctor’s note is required from the 3rd day of illness.\n\nBest regards,\nHR",
+    "fully_answered": false,
+    "seconds": 1.69,
+    "input": 392,
+    "output": 115
+  },
+  {
+    "id": 26,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex,\n\nThanks for reaching out. Reference letters are issued within 10 working days after a request. If you already submitted one and still haven’t received it, HR will follow up on that part.\n\nBest,\nHR",
+    "fully_answered": false,
+    "seconds": 1.06,
+    "input": 351,
+    "output": 67
+  },
+  {
+    "id": 26,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for your message. Reference letters are issued within 10 working days after a request. Since you’re still waiting after leaving in August, HR will follow up on your request to confirm the status and next steps.\n\nIf you also need a different document (for example, an employment certificate), HR can help separately.\n\nBest regards,\nHR Team",
+    "fully_answered": false,
+    "seconds": 1.87,
+    "input": 351,
+    "output": 96
+  },
+  {
+    "id": 27,
+    "model": "gpt-5.4-mini",
+    "reply": "مرحباً Alex،\nيمكن للموظفين بدوام كامل الحصول على 30 يوم إجازة في السنة التقويمية. لا أستطيع تحديد عدد الأيام المتبقية لك دون الاطلاع على رصيدك الحالي، لذلك ستتابع HR هذه النقطة معك. إذا رغبت، يمكننا أيضاً توضيح كيفية تقديم طلب الإجازة بشكل منفصل.",
+    "fully_answered": false,
+    "seconds": 3.21,
+    "input": 396,
+    "output": 97
+  },
+  {
+    "id": 27,
+    "model": "gpt-5.4-nano",
+    "reply": "مرحباً Alex،\n\nحسب معلومات الإجازات، يحصل الموظف بدوام كامل على 30 يوم إجازة سنوياً خلال السنة التقويمية. لا تتضمن البيانات المتاحة لدينا عدد الأيام المتبقية لديك حتى الآن.\n\nسيتم متابعة ذلك معك من قبل الموارد البشرية وسنعود لك بعد التحقق من رصيدك الحالي.\n\nشكراً لتواصلك!",
+    "fully_answered": false,
+    "seconds": 1.14,
+    "input": 396,
+    "output": 104
+  },
+  {
+    "id": 28,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, overtime is paid with the salary of the following month. If there’s still an issue, HR will follow up on that part. We can also follow up separately on your contract copy and your request to take next Thursday off.",
+    "fully_answered": false,
+    "seconds": 1.76,
+    "input": 393,
+    "output": 65
+  },
+  {
+    "id": 28,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for reaching out. Overtime is paid with the salary of the following month. If your overtime is not reflected there, HR will follow up with that part.\n\nPayslips are available in the employee portal from the 25th. For a copy of your contract, HR will follow up on that part.\n\nRegarding taking next Thursday off, HR will follow up on that part separately.\n\nBest regards,\nHR Team",
+    "fully_answered": false,
+    "seconds": 1.61,
+    "input": 393,
+    "output": 113
+  },
+  {
+    "id": 30,
+    "model": "gpt-5.4-mini",
+    "reply": "Hi Alex, thanks for reaching out. Vacation requests need to be submitted at least 2 weeks in advance, and full-time employees get 30 vacation days per calendar year. If you’d like, HR can follow up on your specific request. Any other concerns about your manager’s decision will be handled separately.",
+    "fully_answered": false,
+    "seconds": 1.2,
+    "input": 389,
+    "output": 79
+  },
+  {
+    "id": 30,
+    "model": "gpt-5.4-nano",
+    "reply": "Hi Alex,\n\nThanks for reaching out. Full-time employees receive 30 vacation days per calendar year. Vacation requests must be submitted at least 2 weeks in advance, and up to 5 unused days may be carried over until 31 March of the next year.\n\nIf your request doesn’t meet the 2-weeks-in-advance requirement, that could explain the decision. HR can follow up on the details of your specific request and the timing with your manager if needed. We’ll handle any other concerns you have separately.\n\nBest regards,\nHR",
+    "fully_answered": false,
+    "seconds": 2.83,
+    "input": 389,
+    "output": 134
+  }
+]

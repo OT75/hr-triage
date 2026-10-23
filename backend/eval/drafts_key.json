@@ -1,0 +1,94 @@
+{
+  "1": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "2": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "3": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "4": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "5": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "6": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "7": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "8": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "9": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "10": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "11": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "12": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "13": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "20": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "21": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "22": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "23": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "24": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "25": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "26": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  },
+  "27": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "28": {
+    "A": "gpt-5.4-mini",
+    "B": "gpt-5.4-nano"
+  },
+  "30": {
+    "A": "gpt-5.4-nano",
+    "B": "gpt-5.4-mini"
+  }
+}

@@ -157,25 +157,35 @@ def load_policy(category: Category) -> str | None:
     return None
 
 @observe(as_type="generation", name="draft")
-def draft_reply(name: str, text: str, extraction: Extraction | None) -> DraftResult:
+def draft_reply(
+    name: str,
+    text: str,
+    extraction: Extraction | None,
+    model: str | None = None,
+    usage: dict | None = None,
+) -> DraftResult:
+    """Draft a reply from the category's policy, or a holding reply.
+    model: use a different model than the default (for comparisons).
+    usage: if given, input and output token counts are added to it."""
+    model = model or settings.draft_model
     holding = DraftResult(reply=HOLDING_REPLY.format(name=name), fully_answered=False)
-
+ 
     if extraction is None or extraction.category == Category.other:
         log_event("draft_holding_reply", reason="no category")
         return holding
-
+ 
     policy = load_policy(extraction.category)
     if policy is None:
         log_event("draft_holding_reply", level=logging.WARNING, reason="policy file missing")
         
         ERRORS.labels(step="policy_missing").inc()
         return holding
-
+ 
     system = DRAFT_PROMPT.format(name=name, language=extraction.language, policy=policy)
     start = time.perf_counter()
-
+ 
     response = client.responses.parse(
-        model=settings.draft_model,
+        model=model,
         input=[
             {"role": "system", "content": system},
             {"role": "user", "content": text},
@@ -183,8 +193,12 @@ def draft_reply(name: str, text: str, extraction: Extraction | None) -> DraftRes
         text_format=DraftResult,
     )
     
-    record_llm_call("draft", settings.draft_model, time.perf_counter() - start, response)
-
+    record_llm_call("draft", model, time.perf_counter() - start, response)
+ 
+    if usage is not None:
+        usage["input"] += response.usage.input_tokens
+        usage["output"] += response.usage.output_tokens
+ 
     return response.output_parsed or holding # Extraction succeeded however a parsing problem happend (ex: hit token limit -> returned an invalid None json)
 
 
