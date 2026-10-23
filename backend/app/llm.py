@@ -182,6 +182,7 @@ def draft_reply(
         return holding
  
     system = DRAFT_PROMPT.format(name=name, language=extraction.language, policy=policy)
+    system += f"\n\nToday's date: {date.today().isoformat()}"
     start = time.perf_counter()
  
     response = client.responses.parse(
