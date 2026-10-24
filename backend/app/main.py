@@ -131,8 +131,8 @@ def create_request(request: RequestIn, db: Session = Depends(get_db)):  # db: on
 
 # ---------- HR side (password protected) ----------
 
-def get_ticket_or_404(db: Session, ticket_id: int) -> Ticket:
-    ticket = db.get(Ticket, ticket_id)
+def get_ticket_or_404(db: Session, ticket_id: int, lock: bool = False) -> Ticket:
+    ticket = db.get(Ticket, ticket_id, with_for_update=lock)   # lock=True 
     if ticket is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ticket not found")
     return ticket
@@ -159,7 +159,7 @@ def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
 
 @app.patch("/tickets/{ticket_id}", response_model=TicketHR, dependencies=[Depends(require_hr)])
 def update_ticket(ticket_id: int, update: TicketUpdate, db: Session = Depends(get_db)):
-    ticket = get_ticket_or_404(db, ticket_id)
+    ticket = get_ticket_or_404(db, ticket_id, lock=True)
     if ticket.status == "approved":
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ticket is already approved")
 
